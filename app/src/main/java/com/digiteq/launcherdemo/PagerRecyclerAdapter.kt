@@ -8,7 +8,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.digiteq.launcherdemo.helper.ItemTouchHelperAdapter
 import com.digiteq.launcherdemo.helper.OnStartDragListener
-import java.util.Collections
+import java.util.*
 
 class PagerRecyclerAdapter(
     private val stringList: ArrayList<Int>,
@@ -46,9 +46,24 @@ class PagerRecyclerAdapter(
 
     }
 
+    private fun onRowMoved(fromPosition: Int, toPosition: Int) {
+        if (fromPosition < toPosition) {
+            for (i in fromPosition until toPosition) {
+                Collections.swap(stringList, i, i + 1)
+            }
+        } else {
+            for (i in fromPosition downTo toPosition + 1) {
+                Collections.swap(stringList, i, i - 1)
+            }
+        }
+    }
+
     override fun onItemMove(fromPosition: Int, toPosition: Int): Boolean {
-        Collections.swap(stringList, fromPosition, toPosition)
-        notifyItemMoved(fromPosition, toPosition)
+//        Collections.swap(stringList, fromPosition, toPosition)
+//        notifyItemMoved(fromPosition, toPosition)
+        onRowMoved(fromPosition, toPosition)
+//        notifyItemMoved(fromPosition, toPosition)
+        notifyDataSetChanged()
         return true
     }
 

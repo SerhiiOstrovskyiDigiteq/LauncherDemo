@@ -11,13 +11,15 @@ import androidx.recyclerview.widget.RecyclerView
 import java.lang.Integer.max
 
 class PagerLayoutManager(
-    private val spanCount: Int = 12,
+    private val spanCount: Int = 24,
     private val spanSizeLookup: (position: Int) -> Int = { _ -> 4 }
 ) : RecyclerView.LayoutManager(), RecyclerView.SmoothScroller.ScrollVectorProvider {
 
     private interface LayoutCompleteListener {
         fun onLayoutComplete(page: Int)
     }
+
+    public var canScroll = true
 
     private var scrollDistance = 0
     private var maxScrollDistance = width
@@ -99,7 +101,7 @@ class PagerLayoutManager(
     }
 
     override fun canScrollHorizontally(): Boolean {
-        return true
+        return canScroll
     }
 
     override fun scrollHorizontallyBy(

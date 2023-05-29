@@ -22,14 +22,17 @@ class MainActivity : AppCompatActivity() {
         val dataList = ArrayList((0..50).toMutableList())
 
         val rv = findViewById<RecyclerView>(R.id.icons)
-        rv.layoutManager = PagerLayoutManager()
+        val lm = PagerLayoutManager()
+        rv.layoutManager = lm
         val adapter = PagerRecyclerAdapter(dataList, object : OnStartDragListener {
             override fun onStartDrag(viewHolder: RecyclerView.ViewHolder) {
                 itemTouchHelper.startDrag(viewHolder)
+                lm.canScroll = false
             }
         })
         rv.adapter = adapter
-        val callback = ItemTouchHelperCallback(adapter)
+
+        val callback = ItemTouchHelperCallback(adapter) { lm.canScroll = true }
         itemTouchHelper = ItemTouchHelper(callback)
         itemTouchHelper.attachToRecyclerView(rv)
         PagerSnapHelper().attachToRecyclerView(rv)
